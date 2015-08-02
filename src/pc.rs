@@ -57,13 +57,13 @@ impl Pc {
         self.pos = self.pos + self.dir;
     }
 
-    /// Sets the direction to left.
-    pub fn left(&mut self) {
+    /// Sets the direction to right.
+    pub fn right(&mut self) {
         self.dir = Point {x: 1, y: 0}
     }
 
-    /// Sets the direction to right.
-    pub fn right(&mut self) {
+    /// Sets the direction to left.
+    pub fn left(&mut self) {
         self.dir = Point {x: -1, y: 0}
     }
 
