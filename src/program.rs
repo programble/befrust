@@ -1,7 +1,6 @@
 //! Program space and execution.
 
-use std::io;
-use std::io::Read;
+use std::io::{self, Read};
 use consts;
 use pc::Pc;
 

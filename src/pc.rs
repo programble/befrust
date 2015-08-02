@@ -1,8 +1,7 @@
 //! Program counter.
 
 use consts;
-use rand;
-use rand::Rng;
+use rand::{self, Rng};
 
 /// Possible directions of program counter.
 #[derive(Clone, Copy)]
