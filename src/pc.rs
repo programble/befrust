@@ -29,7 +29,7 @@ pub enum Direction {
 pub struct Pc {
     pub x: usize,
     pub y: usize,
-    pub dir: Direction,
+    dir: Direction,
 }
 
 impl Pc {
@@ -52,8 +52,28 @@ impl Pc {
         }
     }
 
-    /// Sets the current direction randomly.
-    pub fn rand(&mut self) {
+    /// Sets direction to right.
+    pub fn right(&mut self) {
+        self.dir = Direction::Right;
+    }
+
+    /// Sets direction to left.
+    pub fn left(&mut self) {
+        self.dir = Direction::Left;
+    }
+
+    /// Sets direction to down.
+    pub fn down(&mut self) {
+        self.dir = Direction::Down;
+    }
+
+    /// Sets direction to up.
+    pub fn up(&mut self) {
+        self.dir = Direction::Up;
+    }
+
+    /// Sets direction randomly.
+    pub fn random(&mut self) {
         let mut rng = rand::thread_rng();
         let dirs = [
             Direction::Right,
@@ -74,11 +94,11 @@ mod tests {
     fn step_x_wrap() {
         let mut pc = Pc::new();
 
-        pc.dir = Direction::Left;
+        pc.left();
         pc.step();
         assert_eq!(pc.x, consts::WIDTH - 1);
 
-        pc.dir = Direction::Right;
+        pc.right();
         pc.step();
         assert_eq!(pc.x, 0);
     }
@@ -87,11 +107,11 @@ mod tests {
     fn step_y_wrap() {
         let mut pc = Pc::new();
 
-        pc.dir = Direction::Up;
+        pc.up();
         pc.step();
         assert_eq!(pc.y, consts::HEIGHT - 1);
 
-        pc.dir = Direction::Down;
+        pc.down();
         pc.step();
         assert_eq!(pc.y, 0);
     }
