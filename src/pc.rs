@@ -1,9 +1,8 @@
 //! Program counter.
 
-extern crate rand;
-
 use consts;
-use self::rand::Rng;
+use rand;
+use rand::Rng;
 
 /// Possible directions of program counter.
 #[derive(Clone, Copy)]
