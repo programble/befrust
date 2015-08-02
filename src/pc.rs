@@ -42,10 +42,13 @@ impl Pc {
     pub fn step(&mut self) {
         match self.dir {
             Direction::Right   => self.x = (self.x + 1) % consts::WIDTH,
+
             Direction::Left
                 if self.x == 0 => self.x = consts::WIDTH - 1,
             Direction::Left    => self.x -= 1,
+
             Direction::Down    => self.y = (self.y + 1) % consts::HEIGHT,
+
             Direction::Up
                 if self.y == 0 => self.y = consts::HEIGHT - 1,
             Direction::Up      => self.y -= 1,
