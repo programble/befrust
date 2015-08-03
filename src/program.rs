@@ -5,6 +5,15 @@ use consts;
 use pc::Pc;
 
 /// Program space, counter and stack.
+///
+/// # Example
+///
+/// ```
+/// use befrust::program::Program;
+///
+/// let mut p = Program::with_bytes(b"\"!dlroW ,olleH\">:#,_@").unwrap();
+/// p.run();
+/// ```
 pub struct Program {
     data: [[u8; consts::HEIGHT]; consts::WIDTH],
     pc: Pc,
@@ -16,10 +25,39 @@ impl Program {
     /// Creates a new Program, filled with spaces.
     pub fn new() -> Program {
         Program {
-            data: [[32; consts::HEIGHT]; consts::WIDTH],
+            data: [[b' '; consts::HEIGHT]; consts::WIDTH],
             pc: Pc::new(),
             strmode: false,
             stack: Vec::new(),
+        }
+    }
+
+    /// Creates a new Program from a slice of ASCII bytes.
+    pub fn with_bytes(source: &[u8]) -> Result<Program, String> {
+        let mut program = Program::new();
+
+        for (y, line) in source.split(|&b| b == b'\n').enumerate() {
+            if y == consts::HEIGHT {
+                return Err("Too many rows".to_string());
+            }
+            if line.len() >= consts::WIDTH {
+                return Err(format!("Line {} is too long", y + 1));
+            }
+
+            // FIXME: Better way of doing this? Would like to just copy one buffer to another,
+            // which would require [y][x].
+            for (x, &b) in line.iter().enumerate() {
+                program.data[x][y] = b;
+            }
+        }
+
+        Ok(program)
+    }
+
+    /// Runs the program to completion. Programs may never complete.
+    pub fn run(&mut self) {
+        loop {
+            if !self.step() { break }
         }
     }
 
