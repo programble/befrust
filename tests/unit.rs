@@ -202,3 +202,24 @@ fn put_oob() {
     test_io(b"0055*p@", &[], &[]);
     test_io(b"0825**0p@", &[], &[]);
 }
+
+#[test]
+fn input_value() {
+    test_io(b"&.@", b"128\n", b"128 ");
+    test_io(b"&.@", b"abc\n", b"0 ");
+}
+
+#[test]
+fn input_value_eof() {
+    test_io(b"&.@", &[], b"0 ");
+}
+
+#[test]
+fn input_ascii() {
+    test_io(b"~,@", b"a", b"a");
+}
+
+#[test]
+fn input_ascii_eof() {
+    test_io(b"~.@", &[], b"255 ");
+}
