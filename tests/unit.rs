@@ -107,3 +107,15 @@ fn greater() {
     test_io(b"34`.@", &[], b"0 ");
     test_io(b"33`.@", &[], b"0 ");
 }
+
+#[test]
+fn horizontal_if() {
+    test_io(b"0_1.@", &[], b"1 ");
+    test_io(b"5_@.1", &[], b"1 ");
+}
+
+#[test]
+fn vertical_if() {
+    test_io(b"0|\n 1\n .\n @", &[], b"1 ");
+    test_io(b"5|\n @\n .\n 1", &[], b"1 ");
+}
