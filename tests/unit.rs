@@ -12,6 +12,18 @@ fn output_value() {
 }
 
 #[test]
+fn nop() {
+    test_io(b"()=.@", &[], b"0 ");
+    test_io(b"qwertyuio[].@", &[], b"0 ");
+    test_io(b"QWERTYUIOP{}.@", &[], b"0 ");
+    test_io(b"asdfhjkl;'.@", &[], b"0 ");
+    test_io(b"ASDFGHJKL.@", &[], b"0 ");
+    test_io(b"zxcbnm.@", &[], b"0 ");
+    test_io(b"ZXCVBNM.@", &[], b"0 ");
+    test_io(b" .@", &[], b"0 ");
+}
+
+#[test]
 fn left() {
     test_io(b"<@.", &[], b"0 ");
 }
