@@ -54,3 +54,43 @@ fn push() {
 fn strmode() {
     test_io(b"\"@\".@", &[], b"64 ");
 }
+
+#[test]
+fn add() {
+    test_io(b"23+.@", &[], b"5 ");
+}
+
+#[test]
+fn subtract() {
+    test_io(b"53-.@", &[], b"2 ");
+}
+
+#[test]
+fn multiply() {
+    test_io(b"23*.@", &[], b"6 ");
+}
+
+#[test]
+fn divide() {
+    test_io(b"63/.@", &[], b"2 ");
+}
+
+#[test]
+fn modulo() {
+    test_io(b"54%.@", &[], b"1 ");
+}
+
+#[test]
+fn add_wrap() {
+    test_io(b"255**1+5*1+.@", &[], b"0 ");
+}
+
+#[test]
+fn subtract_wrap() {
+    test_io(b"01-.@", &[], b"255 ");
+}
+
+#[test]
+fn multiply_wrap() {
+    test_io(b"4444***.@", &[], b"0 ");
+}
