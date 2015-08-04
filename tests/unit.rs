@@ -119,3 +119,18 @@ fn vertical_if() {
     test_io(b"0|\n 1\n .\n @", &[], b"1 ");
     test_io(b"5|\n @\n .\n 1", &[], b"1 ");
 }
+
+#[test]
+fn dup() {
+    test_io(b"5:..@", &[], b"5 5 ");
+}
+
+#[test]
+fn swap() {
+    test_io(b"34\\..@", &[], b"3 4 ");
+}
+
+#[test]
+fn pop() {
+    test_io(b"34$.@", &[], b"3 ");
+}
