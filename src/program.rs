@@ -211,8 +211,12 @@ impl<I: BufRead, O: Write> Program<I, O> {
     }
 
     fn input_ascii(&mut self) {
-        let mut buf = [0u8];
-        self.input.read(&mut buf).unwrap();
-        self.push(buf[0]);
+        let c = self.input
+            .by_ref()
+            .bytes()
+            .next()
+            .map(Result::unwrap)
+            .unwrap_or(0);
+        self.push(c);
     }
 }
