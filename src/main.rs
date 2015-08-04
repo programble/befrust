@@ -12,9 +12,7 @@ fn main() {
     let mut source = Vec::<u8>::new();
     file.read_to_end(&mut source).unwrap();
 
-    let stdin = io::stdin();
-    let stdout = io::stdout();
-    let mut program = Program::new(stdin.lock(), stdout.lock());
+    let mut program = Program::new(io::stdin(), io::stdout());
     program.load(&source);
     program.run();
 }

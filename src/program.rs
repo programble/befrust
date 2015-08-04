@@ -1,6 +1,6 @@
 //! Program space and execution.
 
-use std::io::{Read, BufRead, Write};
+use std::io::{Read, BufRead, BufReader, Write};
 use consts;
 use pc::Pc;
 
@@ -12,22 +12,20 @@ use pc::Pc;
 /// use std::io;
 /// use befrust::program::Program;
 ///
-/// let stdin = io::stdin();
-/// let stdout = io::stdout();
-/// let mut p = Program::new(stdin.lock(), stdout.lock());
+/// let mut p = Program::new(io::stdin(), io::stdout());
 /// p.load(b"\"!dlroW ,olleH\">:#,_@");
 /// p.run();
 /// ```
-pub struct Program<I: BufRead, O: Write> {
+pub struct Program<I: Read, O: Write> {
     data: [[u8; consts::WIDTH]; consts::HEIGHT],
     pc: Pc,
     strmode: bool,
     stack: Vec<i32>,
-    input: I,
+    input: BufReader<I>,
     output: O,
 }
 
-impl<I: BufRead, O: Write> Program<I, O> {
+impl<I: Read, O: Write> Program<I, O> {
     /// Creates a blank `Program` attached to input and output.
     pub fn new(input: I, output: O) -> Program<I, O> {
         Program {
@@ -35,7 +33,7 @@ impl<I: BufRead, O: Write> Program<I, O> {
             pc: Pc::new(),
             strmode: false,
             stack: Vec::new(),
-            input: input,
+            input: BufReader::new(input),
             output: output,
         }
     }
