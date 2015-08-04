@@ -17,7 +17,7 @@ fn test_io(source: &'static [u8], input: &'static [u8], expected: &'static [u8])
             p.run();
         }
 
-        assert_eq!(out, expected);
+        assert_eq!(expected, &out[..]);
 
     }, 1000);
 }
