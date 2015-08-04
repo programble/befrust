@@ -38,3 +38,9 @@ fn factorial() {
     //  ^    _$>\:^
     test_io(b"&>:1-:v v *_$.@\n ^    _$>\\:^", b"5\n", b"120 ");
 }
+
+#[test]
+fn quine() {
+    let quine = b"01->1# +# :# 0# g# ,# :# 5# 8# *# 4# +# -# _@";
+    test_io(quine, &[], quine);
+}
