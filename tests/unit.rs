@@ -191,3 +191,14 @@ fn get_oob() {
     test_io(b"055*g.@", &[], b"0 ");
     test_io(b"825**0g.@", &[], b"0 ");
 }
+
+#[test]
+fn put() {
+    test_io(b"\"#\"70p1 2.@", &[], b"1 ");
+}
+
+#[test]
+fn put_oob() {
+    test_io(b"0055*p@", &[], &[]);
+    test_io(b"0825**0p@", &[], &[]);
+}
