@@ -94,3 +94,16 @@ fn subtract_wrap() {
 fn multiply_wrap() {
     test_io(b"4444***.@", &[], b"0 ");
 }
+
+#[test]
+fn not() {
+    test_io(b"5!.@", &[], b"0 ");
+    test_io(b"0!.@", &[], b"1 ");
+}
+
+#[test]
+fn greater() {
+    test_io(b"43`.@", &[], b"1 ");
+    test_io(b"34`.@", &[], b"0 ");
+    test_io(b"33`.@", &[], b"0 ");
+}
