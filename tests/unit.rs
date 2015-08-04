@@ -180,3 +180,14 @@ v  4
 ";
     test_io(bottom, &[], b"3 ");
 }
+
+#[test]
+fn get() {
+    test_io(b"20g,@", &[], b"g");
+}
+
+#[test]
+fn get_oob() {
+    test_io(b"055*g.@", &[], b"0 ");
+    test_io(b"825**0g.@", &[], b"0 ");
+}
