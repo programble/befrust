@@ -31,3 +31,10 @@ fn hello_world() {
 fn cat() {
     test_io(b"~:1+!#@_,", b"cat", b"cat");
 }
+
+#[test]
+fn factorial() {
+    // &>:1-:v v *_$.@
+    //  ^    _$>\:^
+    test_io(b"&>:1-:v v *_$.@\n ^    _$>\\:^", b"5\n", b"120 ");
+}
