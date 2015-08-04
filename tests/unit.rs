@@ -97,42 +97,42 @@ fn multiply_wrap() {
 
 #[test]
 fn not() {
-    test_io(b"5!.@", &[], b"0 ");
+    test_io(b"2!.@", &[], b"0 ");
     test_io(b"0!.@", &[], b"1 ");
 }
 
 #[test]
 fn greater() {
-    test_io(b"43`.@", &[], b"1 ");
-    test_io(b"34`.@", &[], b"0 ");
-    test_io(b"33`.@", &[], b"0 ");
+    test_io(b"21`.@", &[], b"1 ");
+    test_io(b"12`.@", &[], b"0 ");
+    test_io(b"11`.@", &[], b"0 ");
 }
 
 #[test]
 fn horizontal_if() {
     test_io(b"0_1.@", &[], b"1 ");
-    test_io(b"5_@.1", &[], b"1 ");
+    test_io(b"2_@.1", &[], b"1 ");
 }
 
 #[test]
 fn vertical_if() {
     test_io(b"0|\n 1\n .\n @", &[], b"1 ");
-    test_io(b"5|\n @\n .\n 1", &[], b"1 ");
+    test_io(b"2|\n @\n .\n 1", &[], b"1 ");
 }
 
 #[test]
 fn dup() {
-    test_io(b"5:..@", &[], b"5 5 ");
+    test_io(b"1:..@", &[], b"1 1 ");
 }
 
 #[test]
 fn swap() {
-    test_io(b"34\\..@", &[], b"3 4 ");
+    test_io(b"12\\..@", &[], b"1 2 ");
 }
 
 #[test]
 fn pop() {
-    test_io(b"34$.@", &[], b"3 ");
+    test_io(b"12$.@", &[], b"1 ");
 }
 
 #[test]
@@ -142,43 +142,43 @@ fn output_ascii() {
 
 #[test]
 fn bridge() {
-    test_io(b"3#4.@", &[], b"3 ");
-    test_io(b"<@.4#3", &[], b"3 ");
-    test_io(b"v\n3\n#\n4\n.\n@", &[], b"3 ");
-    test_io(b"^\n@\n.\n4\n#\n3", &[], b"3 ");
+    test_io(b"1#2.@", &[], b"1 ");
+    test_io(b"<@.2#1", &[], b"1 ");
+    test_io(b"v\n1\n#\n2\n.\n@", &[], b"1 ");
+    test_io(b"^\n@\n.\n2\n#\n1", &[], b"1 ");
 }
 
 #[test]
 fn bridge_edge() {
     let left = b"\
-3v
-#<                                                                           @.4
+1v
+#<                                                                           @.2
 ";
-    test_io(left, &[], b"3 ");
+    test_io(left, &[], b"1 ");
 
     let right = b"\
-3  v
-4.@>                                                                           #
+1  v
+2.@>                                                                           #
 ";
-    test_io(right, &[], b"3 ");
+    test_io(right, &[], b"1 ");
 
     let top = b"\
 v #
->3^\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n
+>1^\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n
   @
   .
-  4
+  2
 ";
-    test_io(top, &[], b"3 ");
+    test_io(top, &[], b"1 ");
 
     let bottom = b"\
-v  4
-3  .
+v  2
+1  .
    @
 >  v\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n
    #
 ";
-    test_io(bottom, &[], b"3 ");
+    test_io(bottom, &[], b"1 ");
 }
 
 #[test]
