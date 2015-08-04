@@ -29,7 +29,7 @@ pub struct Program<I: BufRead, O: Write> {
 }
 
 impl<I: BufRead, O: Write> Program<I, O> {
-    /// Creates a blank Program attached to input and output.
+    /// Creates a blank `Program` attached to input and output.
     pub fn new(input: I, output: O) -> Program<I, O> {
         Program {
             data: [[b' '; consts::WIDTH]; consts::HEIGHT],
