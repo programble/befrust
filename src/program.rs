@@ -198,20 +198,20 @@ impl<I: BufRead, O: Write> Program<I, O> {
     fn get(&mut self) {
         let (y, x) = (self.pop() as usize, self.pop() as usize);
 
-        if x >= consts::WIDTH {
-            self.push(0);
-        } else if y >= consts::HEIGHT {
+        if x >= consts::WIDTH || y >= consts::HEIGHT {
             self.push(0);
         } else {
-
             let v = self.data[y][x];
             self.push(v);
         }
     }
 
     fn put(&mut self) {
-        let (y, x, v) = (self.pop(), self.pop(), self.pop());
-        self.data[y as usize][x as usize] = v;
+        let (y, x, v) = (self.pop() as usize, self.pop() as usize, self.pop());
+
+        if x < consts::WIDTH && y < consts::HEIGHT {
+            self.data[y][x] = v;
+        }
     }
 
     fn input_value(&mut self) {
