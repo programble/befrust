@@ -188,7 +188,7 @@ impl<I: BufRead, O: Write> Program<I, O> {
 
     fn output_value(&mut self) {
         let v = self.pop();
-        write!(&mut self.output, "{}", v).unwrap();
+        write!(&mut self.output, "{} ", v).unwrap();
     }
 
     fn output_ascii(&mut self) {
