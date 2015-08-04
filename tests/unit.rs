@@ -75,6 +75,7 @@ fn add() {
 #[test]
 fn subtract() {
     test_io(b"53-.@", &[], b"2 ");
+    test_io(b"35-.@", &[], b"-2 ");
 }
 
 #[test]
@@ -90,21 +91,24 @@ fn divide() {
 #[test]
 fn modulo() {
     test_io(b"54%.@", &[], b"1 ");
+    test_io(b"504-%.@", &[], b"1 ");
+    test_io(b"5-4%.@", &[], b"-1 ");
+    test_io(b"5-04-%.@", &[], b"-1 ");
 }
 
 #[test]
 fn add_wrap() {
-    test_io(b"255**1+5*1+.@", &[], b"0 ");
+    test_io(b"29*1+257***1+2*1+45**1+588***1+279***1+ 1+.@", &[], b"-2147483648 ");
 }
 
 #[test]
 fn subtract_wrap() {
-    test_io(b"01-.@", &[], b"255 ");
+    test_io(b"2-8888888888********** 1-.@", &[], b"2147483647 ");
 }
 
 #[test]
 fn multiply_wrap() {
-    test_io(b"4444***.@", &[], b"0 ");
+    test_io(b"28888888888**********.@", &[], b"-2147483648 ");
 }
 
 #[test]
@@ -233,5 +237,5 @@ fn input_ascii() {
 
 #[test]
 fn input_ascii_eof() {
-    test_io(b"~.@", &[], b"255 ");
+    test_io(b"~.@", &[], b"-1 ");
 }

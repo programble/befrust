@@ -22,7 +22,7 @@ pub struct Program<I: BufRead, O: Write> {
     data: [[u8; consts::WIDTH]; consts::HEIGHT],
     pc: Pc,
     strmode: bool,
-    stack: Vec<u8>,
+    stack: Vec<i32>,
     input: I,
     output: O,
 }
@@ -64,9 +64,9 @@ impl<I: BufRead, O: Write> Program<I, O> {
         match self.data[self.pc.y][self.pc.x] {
 
             b'"'              => self.toggle_strmode(),
-            b if self.strmode => self.push(b),
+            b if self.strmode => self.push(b as i32),
 
-            b @ b'0' ... b'9' => self.push(b - b'0'),
+            b @ b'0' ... b'9' => self.push((b - b'0') as i32),
 
             b'+' => self.add(),
             b'-' => self.subtract(),
@@ -111,12 +111,12 @@ impl<I: BufRead, O: Write> Program<I, O> {
         true
     }
 
-    fn pop(&mut self) -> u8 {
+    fn pop(&mut self) -> i32 {
         self.stack.pop().unwrap_or(0)
     }
 
-    fn push(&mut self, b: u8) {
-        self.stack.push(b);
+    fn push(&mut self, v: i32) {
+        self.stack.push(v);
     }
 
     fn toggle_strmode(&mut self) {
@@ -191,7 +191,7 @@ impl<I: BufRead, O: Write> Program<I, O> {
     }
 
     fn output_ascii(&mut self) {
-        let c = self.pop() as char;
+        let c = self.pop() as u8 as char;
         write!(&mut self.output, "{}", c).unwrap();
     }
 
@@ -202,7 +202,7 @@ impl<I: BufRead, O: Write> Program<I, O> {
             self.push(0);
         } else {
             let v = self.data[y][x];
-            self.push(v);
+            self.push(v as i32);
         }
     }
 
@@ -210,7 +210,7 @@ impl<I: BufRead, O: Write> Program<I, O> {
         let (y, x, v) = (self.pop() as usize, self.pop() as usize, self.pop());
 
         if x < consts::WIDTH && y < consts::HEIGHT {
-            self.data[y][x] = v;
+            self.data[y][x] = v as u8;
         }
     }
 
@@ -226,7 +226,8 @@ impl<I: BufRead, O: Write> Program<I, O> {
             .bytes()
             .next()
             .map(Result::unwrap)
-            .unwrap_or(255);
+            .map(|b| b as i32)
+            .unwrap_or(-1);
         self.push(c);
     }
 }
