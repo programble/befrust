@@ -122,17 +122,17 @@ impl<I: BufRead, O: Write> Program<I, O> {
     }
 
     fn add(&mut self) {
-        let s = self.pop() + self.pop();
+        let s = self.pop().wrapping_add(self.pop());
         self.push(s);
     }
 
     fn subtract(&mut self) {
         let (b, a) = (self.pop(), self.pop());
-        self.push(a - b);
+        self.push(a.wrapping_sub(b));
     }
 
     fn multiply(&mut self) {
-        let p = self.pop() * self.pop();
+        let p = self.pop().wrapping_mul(self.pop());
         self.push(p);
     }
 
@@ -216,7 +216,7 @@ impl<I: BufRead, O: Write> Program<I, O> {
             .bytes()
             .next()
             .map(Result::unwrap)
-            .unwrap_or(0);
+            .unwrap_or(255);
         self.push(c);
     }
 }
