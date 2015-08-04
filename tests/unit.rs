@@ -134,3 +134,8 @@ fn swap() {
 fn pop() {
     test_io(b"34$.@", &[], b"3 ");
 }
+
+#[test]
+fn output_ascii() {
+    test_io(b"\"a\",@", &[], b"a");
+}
