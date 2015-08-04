@@ -61,6 +61,7 @@ impl<I: BufRead, O: Write> Program<I, O> {
 
     /// Executes the next command, returning true if execution should continue.
     pub fn step(&mut self) -> bool {
+        println!("{:?}", self.stack);
         match self.data[self.pc.y][self.pc.x] {
 
             b'"'              => self.toggle_strmode(),
@@ -209,7 +210,7 @@ impl<I: BufRead, O: Write> Program<I, O> {
     fn input_value(&mut self) {
         let mut buf = String::new();
         self.input.read_line(&mut buf).unwrap();
-        self.push(buf.parse().unwrap_or(0));
+        self.push(buf.trim().parse().unwrap_or(0));
     }
 
     fn input_ascii(&mut self) {
