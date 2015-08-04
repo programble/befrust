@@ -1,9 +1,12 @@
 # Befrust
 
+[![Travis](https://img.shields.io/travis/programble/befrust.svg)][travis]
+
 [Befunge][befunge]-93 in Rust.
 
 [Reference distribution][reference] compatible.
 
+[travis]: https://travis-ci.org/programble/befrust
 [befunge]: https://en.wikipedia.org/wiki/Befunge
 [reference]: https://github.com/catseye/Befunge-93
 
