@@ -61,7 +61,6 @@ impl<I: BufRead, O: Write> Program<I, O> {
 
     /// Executes the next command, returning true if execution should continue.
     pub fn step(&mut self) -> bool {
-        println!("{:?}", self.stack);
         match self.data[self.pc.y][self.pc.x] {
 
             b'"'              => self.toggle_strmode(),
