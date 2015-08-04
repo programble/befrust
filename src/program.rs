@@ -1,6 +1,5 @@
 //! Program space and execution.
 
-use std::ptr;
 use std::io::{Read, BufRead, Write};
 use consts;
 use pc::Pc;
@@ -49,8 +48,8 @@ impl<I: BufRead, O: Write> Program<I, O> {
             .enumerate();
 
         for (y, line) in lines {
-            unsafe {
-                ptr::copy_nonoverlapping(line.as_ptr(), self.data[y].as_mut_ptr(), consts::WIDTH)
+            for (x, &b) in line.iter().take(consts::WIDTH).enumerate() {
+                self.data[y][x] = b;
             }
         }
     }
