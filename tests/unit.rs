@@ -139,3 +139,11 @@ fn pop() {
 fn output_ascii() {
     test_io(b"\"a\",@", &[], b"a");
 }
+
+#[test]
+fn bridge() {
+    test_io(b"3#4.@", &[], b"3 ");
+    test_io(b"<@.4#3", &[], b"3 ");
+    test_io(b"v\n3\n#\n4\n.\n@", &[], b"3 ");
+    test_io(b"^\n@\n.\n4\n#\n3", &[], b"3 ");
+}
