@@ -3,16 +3,19 @@ extern crate befrust;
 use std::io;
 use befrust::program::Program;
 
-#[test]
-fn hello_world() {
+fn test_output(source: &[u8], expected: &[u8]) {
     let mut out = Vec::<u8>::new();
 
     {
         let mut p = Program::new(io::empty(), &mut out);
-        p.load(b"\"!dlroW ,olleH\">:#,_@");
+        p.load(source);
         p.run();
     }
 
-    let out = String::from_utf8(out).unwrap();
-    assert_eq!(out, "Hello, World!");
+    assert_eq!(out, expected);
+}
+
+#[test]
+fn hello_world() {
+    test_output(b"\"!dlroW ,olleH\">:#,_@", b"Hello, World!");
 }
