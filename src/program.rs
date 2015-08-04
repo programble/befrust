@@ -67,7 +67,7 @@ impl<I: BufRead, O: Write> Program<I, O> {
             b'"'              => self.toggle_strmode(),
             b if self.strmode => self.push(b),
 
-            b @ b'0' ... b'9' => self.push(b),
+            b @ b'0' ... b'9' => self.push(b - 48),
 
             b'+' => self.add(),
             b'-' => self.subtract(),
