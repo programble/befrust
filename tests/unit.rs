@@ -147,3 +147,36 @@ fn bridge() {
     test_io(b"v\n3\n#\n4\n.\n@", &[], b"3 ");
     test_io(b"^\n@\n.\n4\n#\n3", &[], b"3 ");
 }
+
+#[test]
+fn bridge_edge() {
+    let left = b"\
+3v
+#<                                                                           @.4
+";
+    test_io(left, &[], b"3 ");
+
+    let right = b"\
+3  v
+4.@>                                                                           #
+";
+    test_io(right, &[], b"3 ");
+
+    let top = b"\
+v #
+>3^\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n
+  @
+  .
+  4
+";
+    test_io(top, &[], b"3 ");
+
+    let bottom = b"\
+v  4
+3  .
+   @
+>  v\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n
+   #
+";
+    test_io(bottom, &[], b"3 ");
+}
