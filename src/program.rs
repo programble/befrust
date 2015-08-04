@@ -196,9 +196,17 @@ impl<I: BufRead, O: Write> Program<I, O> {
     }
 
     fn get(&mut self) {
-        let (y, x) = (self.pop(), self.pop());
-        let v = self.data[y as usize][x as usize];
-        self.push(v);
+        let (y, x) = (self.pop() as usize, self.pop() as usize);
+
+        if x >= consts::WIDTH {
+            self.push(0);
+        } else if y >= consts::HEIGHT {
+            self.push(0);
+        } else {
+
+            let v = self.data[y][x];
+            self.push(v);
+        }
     }
 
     fn put(&mut self) {
