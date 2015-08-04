@@ -4,7 +4,7 @@ use consts;
 use rand::{self, Rng};
 
 /// Possible directions of program counter.
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub enum Direction {
     Right,
     Left,
@@ -24,6 +24,7 @@ pub enum Direction {
 ///
 /// assert_eq!((1, 0), (pc.x, pc.y));
 /// ```
+#[derive(Debug)]
 pub struct Pc {
     pub x: usize,
     pub y: usize,
