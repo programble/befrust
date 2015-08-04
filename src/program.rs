@@ -1,6 +1,7 @@
 //! Program space and execution.
 
-use std::io::{self, Read};
+use std::ptr;
+use std::io::{Read, BufRead, Write};
 use consts;
 use pc::Pc;
 
@@ -9,49 +10,49 @@ use pc::Pc;
 /// # Example
 ///
 /// ```
+/// use std::io;
 /// use befrust::program::Program;
 ///
-/// let mut p = Program::with_bytes(b"\"!dlroW ,olleH\">:#,_@").unwrap();
+/// let stdin = io::stdin();
+/// let stdout = io::stdout();
+/// let mut p = Program::new(stdin.lock(), stdout.lock());
+/// p.load(b"\"!dlroW ,olleH\">:#,_@");
 /// p.run();
 /// ```
-pub struct Program {
-    data: [[u8; consts::HEIGHT]; consts::WIDTH],
+pub struct Program<I: BufRead, O: Write> {
+    data: [[u8; consts::WIDTH]; consts::HEIGHT],
     pc: Pc,
     strmode: bool,
     stack: Vec<u8>,
+    input: I,
+    output: O,
 }
 
-impl Program {
-    /// Creates a new Program, filled with spaces.
-    pub fn new() -> Program {
+impl<I: BufRead, O: Write> Program<I, O> {
+    /// Creates a blank Program attached to input and output.
+    pub fn new(input: I, output: O) -> Program<I, O> {
         Program {
-            data: [[b' '; consts::HEIGHT]; consts::WIDTH],
+            data: [[b' '; consts::WIDTH]; consts::HEIGHT],
             pc: Pc::new(),
             strmode: false,
             stack: Vec::new(),
+            input: input,
+            output: output,
         }
     }
 
-    /// Creates a new Program from a slice of ASCII bytes.
-    pub fn with_bytes(source: &[u8]) -> Result<Program, String> {
-        let mut program = Program::new();
+    /// Load a program from ASCII bytes.
+    pub fn load(&mut self, source: &[u8]) {
+        let lines = source
+            .split(|&b| b == b'\n')
+            .take(consts::HEIGHT)
+            .enumerate();
 
-        for (y, line) in source.split(|&b| b == b'\n').enumerate() {
-            if y == consts::HEIGHT {
-                return Err("Too many rows".to_string());
-            }
-            if line.len() >= consts::WIDTH {
-                return Err(format!("Line {} is too long", y + 1));
-            }
-
-            // FIXME: Better way of doing this? Would like to just copy one buffer to another,
-            // which would require [y][x].
-            for (x, &b) in line.iter().enumerate() {
-                program.data[x][y] = b;
+        for (y, line) in lines {
+            unsafe {
+                ptr::copy_nonoverlapping(line.as_ptr(), self.data[y].as_mut_ptr(), consts::WIDTH)
             }
         }
-
-        Ok(program)
     }
 
     /// Runs the program to completion. Programs may never complete.
@@ -63,7 +64,7 @@ impl Program {
 
     /// Executes the next command, returning true if execution should continue.
     pub fn step(&mut self) -> bool {
-        match self.data[self.pc.x][self.pc.y] {
+        match self.data[self.pc.y][self.pc.x] {
 
             b'"'              => self.toggle_strmode(),
             b if self.strmode => self.push(b),
@@ -186,32 +187,35 @@ impl Program {
     }
 
     fn output_value(&mut self) {
-        print!("{} ", self.pop());
+        let v = self.pop();
+        self.output.write_all(v.to_string().as_bytes()).unwrap();
     }
 
     fn output_ascii(&mut self) {
-        print!("{}", self.pop() as char);
+        let c = self.pop() as char;
+        self.output.write_all(c.to_string().as_bytes()).unwrap();
     }
 
     fn get(&mut self) {
         let (y, x) = (self.pop(), self.pop());
-        let v = self.data[x as usize][y as usize];
+        let v = self.data[y as usize][x as usize];
         self.push(v);
     }
 
     fn put(&mut self) {
         let (y, x, v) = (self.pop(), self.pop(), self.pop());
-        self.data[x as usize][y as usize] = v;
+        self.data[y as usize][x as usize] = v;
     }
 
     fn input_value(&mut self) {
         let mut buf = String::new();
-        io::stdin().read_line(&mut buf).unwrap();
+        self.input.read_line(&mut buf).unwrap();
         self.push(buf.parse().unwrap_or(0));
     }
 
     fn input_ascii(&mut self) {
-        let v = io::stdin().bytes().next().unwrap().unwrap();
-        self.push(v);
+        let mut buf = [0u8];
+        self.input.read(&mut buf).unwrap();
+        self.push(buf[0]);
     }
 }
