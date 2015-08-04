@@ -26,3 +26,8 @@ fn test_io(source: &'static [u8], input: &'static [u8], expected: &'static [u8])
 fn hello_world() {
     test_io(b"\"!dlroW ,olleH\">:#,_@", &[], b"Hello, World!");
 }
+
+#[test]
+fn cat() {
+    test_io(b"~:1+!#@_,", b"cat", b"cat");
+}
