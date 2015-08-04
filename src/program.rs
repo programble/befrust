@@ -185,12 +185,12 @@ impl<I: BufRead, O: Write> Program<I, O> {
 
     fn output_value(&mut self) {
         let v = self.pop();
-        self.output.write_all(v.to_string().as_bytes()).unwrap();
+        write!(&mut self.output, "{}", v).unwrap();
     }
 
     fn output_ascii(&mut self) {
         let c = self.pop() as char;
-        self.output.write_all(c.to_string().as_bytes()).unwrap();
+        write!(&mut self.output, "{}", c).unwrap();
     }
 
     fn get(&mut self) {
