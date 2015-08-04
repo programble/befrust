@@ -57,9 +57,7 @@ impl<I: BufRead, O: Write> Program<I, O> {
 
     /// Runs the program to completion. Programs may never complete.
     pub fn run(&mut self) {
-        loop {
-            if !self.step() { break }
-        }
+        while self.step() {}
     }
 
     /// Executes the next command, returning true if execution should continue.
